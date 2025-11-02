@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="description" content="Sistema de contagem de maços para Casings JBS">
+    <meta name="keywords" content="JBS, Casings, contagem, maços, indústria">
+    <meta name="author" content="JBS">
+    <title>Contagem de Maços - Casings JBS</title>
+    
+    <!-- INCLUINDO A BIBLIOTECA jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+
+    <!-- ESTILOS (CSS) -->
+    <style>
+        :root {
+            --primary-color: #c8102e; /* Vermelho JBS */
+            --secondary-color: #f8f9fa; 
+            --text-color: #333;
+            --border-color: #ddd; 
+            --white-color: #fff; 
+            --danger-color: #dc3545; 
+            --success-color: #28a745;
+            --dark-gray: #343a40;
+            --light-gray: #6c757d;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--secondary-color); 
+            color: var(--text-color); 
+            margin: 0; 
+            padding: 15px;
+            display: flex; 
+            justify-content: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 600px; 
+            width: 100%; 
+            background: var(--white-color); 
+            padding: 20px;
+            border-radius: 8px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--primary-color);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+            background: linear-gradient(to right, #f8f9fa, #e9ecef, #f8f9fa);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .logo-text {
+            font-family: 'Arial Black', 'Segoe UI', sans-serif;
+            font-size: 2.5em;
+            font-weight: 900;
+            color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            margin: 0;
+            line-height: 1.2;
+        }
+        
+        .logo-subtitle {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            font-weight: bold;
+            color: var(--dark-gray);
+            letter-spacing: 2px;
+            margin-top: 5px;
+            text-transform: uppercase;
+        }
+        
+        .logo-industrial {
+            display: inline-block;
+            background: linear-gradient(45deg, #c8102e, #a50d26);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            position: relative;
+        }
+        
+        .logo-industrial::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #c8102e, transparent);
+        }
+        
+        h1, h2, h3 { 
+            text-align: center; 
+            color: #4a4a4a; 
+        }
+        
+        h1 { 
+            font-size: 1.5em; 
+            margin-bottom: 25px; 
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+        
+        h2 { 
+            border-bottom: 2px solid #eee; 
+            padding-bottom: 10px; 
+            margin-top: 25px; 
+            margin-bottom: 15px; 
+            font-size: 1.2em; 
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+        
+        h3 { 
+            font-size: 1.1em; 
+            margin-bottom: 10px; 
+            text-align: left; 
+            color: var(--dark-gray);
+            font-weight: 600;
+        }
+        
+        input[type="number"], input[type="text"] {
+            width: 100%; 
+            padding: 16px; 
+            margin-bottom: 10px; 
+            border: 1px solid var(--border-color);
+            border-radius: 8px; 
+            box-sizing: border-box; 
+            font-size: 1.2em; 
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="number"]:focus, input[type="text"]:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(200, 16, 46, 0.2);
+            outline: none;
+        }
+        
+        .select-group { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 10px; 
+            margin-bottom: 20px; 
+        }
+        
+        .select-group button {
+            padding: 15px 5px; 
+            font-size: 1em; 
+            font-weight: bold; 
+            color: var(--primary-color);
+            background-color: var(--white-color); 
+            border: 2px solid var(--primary-color); 
+            border-radius: 8px;
+            cursor: pointer; 
+            transition: all 0.2s ease;
+        }
+        
+        .select-group button:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .select-group button.selected { 
+            background-color: var(--primary-color); 
+            color: var(--white-color); 
+        }
+        
+        .add-button {
+            width: 100%; 
+            padding: 18px; 
+            font-size: 1.2em; 
+            font-weight: bold; 
+            color: var(--white-color);
+            background-color: var(--success-color); 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin-top: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .add-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        #maco-list { 
+            list-style: none; 
+            padding: 0; 
+            max-height: 200px; 
+            overflow-y: auto; 
+            border: 1px solid #eee; 
+            border-radius: 8px; 
+        }
+        
+        #maco-list li { 
+            padding: 12px; 
+            border-bottom: 1px solid #eee; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            transition: background-color 0.2s;
+        }
+        
+        #maco-list li:hover {
+            background-color: #f8f9fa;
+        }
+        
+        #maco-list li:last-child { 
+            border-bottom: none; 
+        }
+        
+        .delete-btn { 
+            background: none; 
+            border: none; 
+            color: var(--danger-color); 
+            font-size: 1.5em; 
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        
+        .delete-btn:hover {
+            transform: scale(1.2);
+        }
+        
+        .total-section p { 
+            display: flex; 
+            justify-content: space-between; 
+            font-size: 1.1em; 
+            padding: 8px 0; 
+            margin: 0; 
+        }
+        
+        .total-section .grand-total { 
+            font-weight: bold; 
+            font-size: 1.3em; 
+            padding-top: 10px; 
+            border-top: 2px solid #eee; 
+            margin-top: 10px; 
+            color: var(--primary-color);
+        }
+        
+        .total-section .converted-total { 
+            font-weight: bold; 
+            font-size: 1.2em; 
+            padding-top: 10px; 
+            margin-top: 10px; 
+            color: var(--success-color);
+        }
+        
+        .total-section span { 
+            font-weight: bold; 
+        }
+        
+        .action-buttons { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1fr; 
+            gap: 12px; 
+            margin-top: 25px; 
+        }
+        
+        .action-buttons button { 
+            width: 100%; 
+            padding: 16px; 
+            border: none; 
+            border-radius: 8px; 
+            color: white; 
+            font-size: 1.1em; 
+            font-weight: bold; 
+            cursor: pointer; 
+            transition: all 0.3s ease;
+        }
+        
+        .print-button { 
+            background-color: var(--primary-color); 
+        }
+        
+        .print-button:hover {
+            background-color: #a50d26;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .email-button { 
+            background-color: #007bff; 
+        }
+        
+        .email-button:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .reset-button { 
+            background-color: var(--danger-color); 
+        }
+        
+        .reset-button:hover {
+            background-color: #bd2130;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .status-bar {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 8px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            display: none;
+        }
+        
+        /* ESTILOS PARA IMPRESSÃO */
+        @media print {
+            body { 
+                background-color: #EE6363
+                padding: 0;
+                margin: 0;
+                font-size: 14px;
+            }
+            
+            .container { 
+                box-shadow: none; 
+                border: 1px solid #000; 
+                max-width: 100%;
+                padding: 15px;
+            }
+            
+            /* Esconder elementos desnecessários */
+            .input-section, 
+            .action-buttons, 
+            .delete-btn, 
+            #maco-list,
+            .status-bar,
+            .summary-section,
+            .info-section {
+                display: none !important;
+            }
+            
+            .logo-container { 
+                display: block !important; 
+                margin-bottom: 15px;
+                text-align: center;
+                background: #f8f9fa !important;
+                border: 2px solid #c8102e !important;
+            }
+            
+            /* Logo na impressão - cor sólida e bem definida */
+            .logo-text-print {
+                font-family: 'Arial Black', 'Segoe UI', sans-serif;
+                font-size: 2em;
+                font-weight: 900;
+                color: #8b0000 !important; /* Vermelho mais escuro para impressão */
+                text-transform: uppercase;
+                letter-spacing: 2px;
+                margin: 0;
+                line-height: 1.2;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+            
+            .logo-subtitle-print {
+                font-family: 'Courier New', monospace;
+                font-size: 1em;
+                font-weight: bold;
+                color: #343a40 !important;
+                letter-spacing: 1px;
+                margin-top: 5px;
+                text-transform: uppercase;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+            
+            /* Esconder totais zerados na impressão */
+            .total-section p:has(span:contains("0")) {
+                display: none !important;
+            }
+            
+            .total-section .grand-total {
+                border-top: 2px solid #000;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
+            
+            /* Informações da caixa organizadas */
+            .info-section-print {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border: 1px solid #000;
+                padding: 10px;
+                border-radius: 5px;
+            }
+            
+            .info-section-print h2 {
+                margin-top: 0;
+            }
+        }
+        
+        /* Classe para esconder elementos na tela normal */
+        .info-section-print {
+            display: none;
+        }
+        
+        .logo-print-only {
+            display: none;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+            
+            .select-group {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .logo-text {
+                font-size: 2em;
+            }
+            
+            .logo-subtitle {
+                font-size: 1em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+     <div class="container">
+        <div class="logo-container">
+            <div class="logo-text">
+                CASINGS
+            </div>
+            <div class="logo-subtitle">FROM JBS</div>
+            
+            <!-- Logo especial para impressão -->
+            <div class="logo-print-only">
+                <div class="logo-text-print">CASINGS</div>
+                <div class="logo-subtitle-print">FROM JBS</div>
+            </div>
+        </div>
+        
+        <div class="status-bar" id="status-bar">Dados salvos automaticamente</div>
+        
+        <header><h1>Contagem de Maços</h1></header>
+
+        <div class="info-section">
+            <h2>Informações da Caixa</h2>
+            <input type="number" id="box-number" placeholder="Número da Caixa" onkeyup="salvarDados()">
+            <input type="text" id="owner-name" placeholder="Contador" onkeyup="salvarDados()">
+            <input type="text" id="conferente-name" placeholder="Conferente" onkeyup="salvarDados()">
+        </div>
+
+        <!-- SEÇÃO PARA IMPRESSÃO APENAS - INFORMAÇÕES DA CAIXA COM CORTE -->
+        <div class="info-section-print" id="info-section-print">
+            <h2>Informações da Caixa</h2>
+            <p><strong>Número da Caixa:</strong> <span id="print-box-number"></span></p>
+            <p><strong>Contador:</strong> <span id="print-owner-name"></span></p>
+            <p><strong>Conferente:</strong> <span id="print-conferente-name"></span></p>
+            <p><strong>Tipo de Corte:</strong> <span id="print-corte-principal">-</span></p>
+        </div>
+
+        <div class="input-section">
+            <h2>Adicionar Contagem</h2>
+            <input type="number" id="quantidade" placeholder="Adicionar N° de Maços" min="1" onkeydown="handleEnterKey(event)">
+            <h3>Tipo do Maço</h3>
+            <div class="select-group" id="tipo-group">
+                <button type="button" onclick="selectTipo(this)">1º Corte</button>
+                <button type="button" onclick="selectTipo(this)">2º Corte</button>
+                <button type="button" onclick="selectTipo(this)">Grossa</button>
+            </div>
+            <h3>Metragem</h3>
+            <div class="select-group" id="metragem-group">
+                <button type="button" onclick="selectMetragem(this)">90m</button>
+                <button type="button" onclick="selectMetragem(this)">50m</button>
+                <button type="button" onclick="selectMetragem(this)">30m</button>
+                <button type="button" onclick="selectMetragem(this)">15+15m</button>
+                <button type="button" onclick="selectMetragem(this)">9+9m</button>
+            </div>
+            <button class="add-button" onclick="adicionarEntrada()">Adicionar</button>
+        </div>
+
+        <div class="summary-section">
+            <h2>Lançamentos</h2>
+            <ul id="maco-list"></ul>
+        </div>
+
+        <div class="total-section">
+            <h2>Totalização</h2>
+            <p>Total de Maços (90m): <span id="total-90m">0</span></p>
+            <p>Total de Maços (50m): <span id="total-50m">0</span></p>
+            <p>Total de Maços (30m): <span id="total-30m">0</span></p>
+            <p>Total de Maços (15+15m): <span id="total-1515m">0</span></p>
+            <p>Total de Maços (9+9m): <span id="total-99m">0</span></p>
+            <p class="grand-total">Total Geral de Maços: <span id="total-geral">0</span></p>
+            <p class="converted-total">Total Convertido: <span id="total-convertido">0</span></p>
+        </div>
+        
+        <div class="action-buttons">
+            <button class="print-button" onclick="imprimirRelatorio()">Imprimir</button>
+            <button class="email-button" onclick="enviarEmailComPDF()">Enviar por E-mail</button>
+            <button class="reset-button" onclick="resetarContagem()">Resetar Tudo</button>
+        </div>
+    </div>
+
+    <!-- LÓGICA (JAVASCRIPT) -->
+    <script>
+        // Inicializando o jsPDF
+        const { jsPDF } = window.jspdf;
+        
+        let lancamentos = [];
+        let selectedTipo = null;
+        let selectedMetragem = null;
+
+        const macoList = document.getElementById('maco-list');
+        const quantidadeInput = document.getElementById('quantidade');
+        const boxNumberInput = document.getElementById('box-number');
+        const ownerNameInput = document.getElementById('owner-name');
+        const conferenteNameInput = document.getElementById('conferente-name');
+        const statusBar = document.getElementById('status-bar');
+
+        // FUNÇÃO PARA DETECTAR ENTER E LANÇAR O MAÇO
+        function handleEnterKey(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault();
+                adicionarEntrada();
+            }
+        }
+
+        // FUNÇÕES PARA SELECIONAR
+        function selectTipo(button) {
+            document.querySelectorAll('#tipo-group button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            selectedTipo = button.textContent;
+        }
+
+        function selectMetragem(button) {
+            document.querySelectorAll('#metragem-group button').forEach(btn => {
+                btn.classList.remove('selected');
+            });
+            button.classList.add('selected');
+            selectedMetragem = button.textContent;
+        }
+
+        // FUNÇÃO PARA SALVAR OS DADOS NO NAVEGADOR
+        function salvarDados() {
+            const dados = {
+                boxNumber: boxNumberInput.value,
+                ownerName: ownerNameInput.value,
+                conferenteName: conferenteNameInput.value,
+                lancamentos: lancamentos
+            };
+            localStorage.setItem('dadosContador', JSON.stringify(dados));
+            
+            statusBar.style.display = 'block';
+            setTimeout(() => {
+                statusBar.style.display = 'none';
+            }, 2000);
+        }
+
+        // FUNÇÃO PARA CARREGAR OS DADOS QUANDO A PÁGINA ABRE
+        function carregarDados() {
+            const dadosSalvos = localStorage.getItem('dadosContador');
+            if (dadosSalvos) {
+                const dados = JSON.parse(dadosSalvos);
+                boxNumberInput.value = dados.boxNumber || '';
+                ownerNameInput.value = dados.ownerName || '';
+                conferenteNameInput.value = dados.conferenteName || '';
+                lancamentos = dados.lancamentos || [];
+                renderList();
+                updateTotals();
+            }
+        }
+
+        function adicionarEntrada() {
+            const quantidade = parseInt(quantidadeInput.value);
+            if (!quantidade || quantidade <= 0) { 
+                alert('Insira uma quantidade válida.'); 
+                return; 
+            }
+            if (!selectedTipo) { 
+                alert('Selecione o tipo do maço.'); 
+                return; 
+            }
+            if (!selectedMetragem) { 
+                alert('Selecione a metragem.'); 
+                return; 
+            }
+
+            lancamentos.push({ 
+                id: Date.now(), 
+                quantidade, 
+                tipo: selectedTipo, 
+                metros: selectedMetragem 
+            });
+            renderList();
+            updateTotals();
+            salvarDados();
+            quantidadeInput.value = '';
+            quantidadeInput.focus();
+        }
+
+        function renderList() {
+            macoList.innerHTML = '';
+            if (lancamentos.length === 0) {
+                const li = document.createElement('li');
+                li.innerHTML = '<span style="color: #6c757d; text-align: center; width: 100%;">Nenhum maço adicionado</span>';
+                macoList.appendChild(li);
+                return;
+            }
+            
+            lancamentos.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `<span><strong>${item.quantidade}x</strong> ${item.tipo} - ${item.metros}</span>
+                              <button class="delete-btn" onclick="removerEntrada(${item.id})">✖</button>`;
+                macoList.appendChild(li);
+            });
+        }
+
+        function removerEntrada(id) {
+            lancamentos = lancamentos.filter(item => item.id !== id);
+            renderList();
+            updateTotals();
+            salvarDados();
+        }
+
+        function updateTotals() {
+            // CORREÇÃO AQUI: A ordem estava trocada
+            let totais = { 
+                '90m': 0, 
+                '50m': 0, 
+                '30m': 0, 
+                '15+15m': 0,
+                '9+9m': 0 
+            };
+            
+            lancamentos.forEach(item => {
+                if (item.metros in totais) {
+                    totais[item.metros] += item.quantidade;
+                }
+            });
+            
+            // CORREÇÃO: Agora cada total vai para o elemento correto
+            document.getElementById('total-90m').textContent = totais['90m'];
+            document.getElementById('total-50m').textContent = totais['50m'];
+            document.getElementById('total-30m').textContent = totais['30m'];
+            document.getElementById('total-1515m').textContent = totais['15+15m'];
+            document.getElementById('total-99m').textContent = totais['9+9m'];
+            
+            const totalGeral = totais['90m'] + totais['50m'] + totais['30m'] + totais['15+15m'] + totais['9+9m'];
+            document.getElementById('total-geral').textContent = totalGeral;
+            
+            // CALCULAR TOTAL CONVERTIDO PARA MAÇOS DE 30m
+            let totalConvertido = 0;
+            lancamentos.forEach(item => {
+                // Extrair o valor numérico da metragem
+                let metros = 0;
+                if (item.metros === '30m') {
+                    metros = 30;
+                } else if (item.metros === '50m') {
+                    metros = 50;
+                } else if (item.metros === '15+15m') {
+                    metros = 30; // 15+15m = 30 metros
+                } else if (item.metros === '90m') {
+                    metros = 90;
+                } else if (item.metros === '9+9m') {
+                    metros = 18; // 9+9m = 18 metros
+                }
+                
+                // Fórmula: (quantidade * metros) / 30
+                totalConvertido += (item.quantidade * metros) / 30;
+            });
+            
+            // Arredondar para 2 casas decimais
+            totalConvertido = Math.round(totalConvertido * 100) / 100;
+            document.getElementById('total-convertido').textContent = totalConvertido;
+        }
+
+        // FUNÇÃO PARA PREPARAR IMPRESSÃO
+        function prepararImpressao() {
+            // Atualiza informações da caixa para impressão
+            document.getElementById('print-box-number').textContent = boxNumberInput.value;
+            document.getElementById('print-owner-name').textContent = ownerNameInput.value;
+            document.getElementById('print-conferente-name').textContent = conferenteNameInput.value;
+            
+            // Determina o tipo de corte principal
+            let tiposCorte = {};
+            lancamentos.forEach(item => {
+                tiposCorte[item.tipo] = (tiposCorte[item.tipo] || 0) + item.quantidade;
+            });
+            
+            let cortePrincipal = '-';
+            let maiorQuantidade = 0;
+            for (let tipo in tiposCorte) {
+                if (tiposCorte[tipo] > maiorQuantidade) {
+                    maiorQuantidade = tiposCorte[tipo];
+                    cortePrincipal = tipo;
+                }
+            }
+            
+            document.getElementById('print-corte-principal').textContent = cortePrincipal;
+            
+            // Esconde totais zerados na impressão
+            const totais = ['90m', '50m', '30m', '1515m', '99m'];
+            totais.forEach(metragem => {
+                const elemento = document.getElementById(`total-${metragem}`);
+                const linha = elemento.closest('p');
+                if (parseInt(elemento.textContent) === 0) {
+                    linha.style.display = 'none';
+                } else {
+                    linha.style.display = 'flex';
+                }
+            });
+        }
+
+        function imprimirRelatorio() {
+            prepararImpressao();
+            window.print();
+        }
+
+        // FUNÇÃO PARA ENVIAR E-MAIL (OPÇÃO 1 - SIMPLES)
+        function enviarEmailComPDF() {
+            if (!boxNumberInput.value) {
+                alert('Por favor, preencha o número da caixa antes de enviar o e-mail.');
+                return;
+            }
+            
+            if (lancamentos.length === 0) {
+                alert('Por favor, adicione pelo menos um maço antes de enviar o e-mail.');
+                return;
+            }
+            
+            // Gerar o PDF
+            const doc = new jsPDF();
+            
+            // Cabeçalho
+            doc.setFontSize(16);
+            doc.setTextColor(200, 16, 46); // Vermelho JBS
+            doc.text('CASINGS FROM JBS', 105, 15, { align: 'center' });
+            
+            doc.setFontSize(14);
+            doc.setTextColor(0, 0, 0);
+            doc.text('RELATÓRIO DE CONTAGEM DE MAÇOS', 105, 25, { align: 'center' });
+            
+            // Informações da Caixa
+            doc.setFontSize(12);
+            doc.text(`Número da Caixa: ${boxNumberInput.value}`, 20, 40);
+            doc.text(`Contador: ${ownerNameInput.value}`, 20, 48);
+            doc.text(`Conferente: ${conferenteNameInput.value}`, 20, 56);
+            doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 20, 64);
+            
+            // Lançamentos
+            let y = 85;
+            doc.setFontSize(11);
+            doc.setTextColor(100, 100, 100);
+            doc.text('LANÇAMENTOS:', 20, y);
+            y += 10;
+            
+            lancamentos.forEach((item, index) => {
+                if (y > 250) {
+                    doc.addPage();
+                    y = 20;
+                }
+                doc.text(`${index + 1}. ${item.quantidade}x ${item.tipo} - ${item.metros}`, 25, y);
+                y += 6;
+            });
+            
+            // Totais
+            y = y + 10;
+            doc.setFontSize(12);
+            doc.setTextColor(0, 0, 0);
+            doc.text('TOTAIS:', 20, y);
+            y += 8;
+            
+            const totais = ['90m', '50m', '30m', '15+15m', '9+9m'];
+            totais.forEach(metragem => {
+                const total = document.getElementById(`total-${metragem.replace('+', '')}`).textContent;
+                if (parseInt(total) > 0) {
+                    doc.text(`• Maços ${metragem}: ${total}`, 25, y);
+                    y += 6;
+                }
+            });
+            
+            y += 4;
+            doc.setFontSize(13);
+            doc.setFont(undefined, 'bold');
+            doc.text(`TOTAL GERAL: ${document.getElementById('total-geral').textContent} maços`, 25, y);
+            y += 8;
+            doc.setTextColor(40, 167, 69); // Verde
+            doc.text(`TOTAL CONVERTIDO: ${document.getElementById('total-convertido').textContent} maços (30m)`, 25, y);
+            
+            // Preparar dados do e-mail
+            const subject = `Relatório de Maços - Caixa ${boxNumberInput.value}`;
+            const body = 
+`RELATÓRIO DE CONTAGEM DE MAÇOS - CASINGS FROM JBS
+
+Número da Caixa: ${boxNumberInput.value}
+Contador: ${ownerNameInput.value}
+Conferente: ${conferenteNameInput.value}
+Data: ${new Date().toLocaleDateString('pt-BR')}
+
+TOTAIS:
+- Maços 90m: ${document.getElementById('total-90m').textContent}
+- Maços 50m: ${document.getElementById('total-50m').textContent}
+- Maços 30m: ${document.getElementById('total-30m').textContent}
+- Maços 15+15m: ${document.getElementById('total-1515m').textContent}
+- Maços 9+9m: ${document.getElementById('total-99m').textContent}
+
+TOTAL GERAL: ${document.getElementById('total-geral').textContent} maços
+TOTAL CONVERTIDO: ${document.getElementById('total-convertido').textContent} maços (30m)
+
+Segue em anexo o relatório completo em PDF.
+
+--
+Enviado automaticamente pelo Sistema de Contagem JBS`;
+
+            // Abrir cliente de e-mail
+            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+            window.location.href = mailtoLink;
+            
+            // Mostrar mensagem de sucesso
+            statusBar.textContent = 'Cliente de e-mail aberto. Anexe o PDF manualmente.';
+            statusBar.style.display = 'block';
+            setTimeout(() => {
+                statusBar.style.display = 'none';
+            }, 5000);
+        }
+
+        function resetarContagem() {
+            if (confirm("ATENÇÃO!\nIsso apagará permanentemente todos os dados salvos. Deseja continuar?")) {
+                lancamentos = [];
+                boxNumberInput.value = '';
+                ownerNameInput.value = '';
+                conferenteNameInput.value = '';
+                quantidadeInput.value = '';
+                document.querySelectorAll('.select-group button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                selectedTipo = null;
+                selectedMetragem = null;
+                renderList();
+                updateTotals();
+                salvarDados();
+            }
+        }
+
+        // CARREGAR DADOS QUANDO A PÁGINA É ABERTA
+        window.onload = carregarDados;
+    </script>
+</body>
+</html>
