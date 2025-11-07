@@ -3,10 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="description" content="Sistema de contagem de maços para Casings JBS">
-    <meta name="keywords" content="JBS, Casings, contagem, maços, indústria">
-    <meta name="author" content="JBS">
-    <title>Contagem de Maços - Casings JBS</title>
+    <title>Contagem de Maços - Casings</title>
     
     <!-- INCLUINDO A BIBLIOTECA jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -26,6 +23,54 @@
             --light-gray: #6c757d;
         }
         
+        /* ANIMAÇÃO DE ABERTURA - SIMPLIFICADA */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .splash-logo {
+            font-family: 'Arial', sans-serif;
+            font-size: 4em;
+            font-weight: bold;
+            color: #c8102e;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .splash-subtitle {
+            font-family: 'Arial', sans-serif;
+            font-size: 1.2em;
+            color: #333;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .splash-loading {
+            margin-top: 20px;
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(200, 16, 46, 0.3);
+            border-top: 3px solid #c8102e;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* ESTILOS PRINCIPAIS */
         body {
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--secondary-color); 
@@ -34,7 +79,6 @@
             padding: 15px;
             display: flex; 
             justify-content: center;
-            min-height: 100vh;
         }
         
         .container {
@@ -59,44 +103,20 @@
         }
         
         .logo-text {
-            font-family: 'Arial Black', 'Segoe UI', sans-serif;
-            font-size: 2.5em;
-            font-weight: 900;
+            font-family: 'Arial', sans-serif;
+            font-size: 2.2em;
+            font-weight: bold;
             color: var(--primary-color);
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             margin: 0;
             line-height: 1.2;
         }
         
         .logo-subtitle {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1em;
+            font-family: 'Arial', sans-serif;
+            font-size: 1em;
             font-weight: bold;
             color: var(--dark-gray);
-            letter-spacing: 2px;
             margin-top: 5px;
-            text-transform: uppercase;
-        }
-        
-        .logo-industrial {
-            display: inline-block;
-            background: linear-gradient(45deg, #c8102e, #a50d26);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            position: relative;
-        }
-        
-        .logo-industrial::after {
-            content: '';
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #c8102e, transparent);
         }
         
         h1, h2, h3 { 
@@ -323,10 +343,31 @@
             display: none;
         }
         
+        /* ESTILOS PARA AS SEÇÕES DE INFORMAÇÕES NA TELA */
+        .info-section {
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+        }
+        
+        .conferente-section {
+            margin-bottom: 20px;
+            border: 1px solid var(--border-color);
+            padding: 15px;
+            border-radius: 8px;
+            background-color: #f0f0f0;
+        }
+        
         /* ESTILOS PARA IMPRESSÃO */
         @media print {
+            .splash-screen {
+                display: none !important;
+            }
+            
             body { 
-                background-color: #EE6363
+                background-color: white;
                 padding: 0;
                 margin: 0;
                 font-size: 14px;
@@ -339,14 +380,14 @@
                 padding: 15px;
             }
             
-            /* Esconder elementos desnecessários */
             .input-section, 
             .action-buttons, 
             .delete-btn, 
             #maco-list,
             .status-bar,
             .summary-section,
-            .info-section {
+            .info-section,
+            .conferente-section {
                 display: none !important;
             }
             
@@ -358,33 +399,23 @@
                 border: 2px solid #c8102e !important;
             }
             
-            /* Logo na impressão - cor sólida e bem definida */
             .logo-text-print {
-                font-family: 'Arial Black', 'Segoe UI', sans-serif;
-                font-size: 2em;
-                font-weight: 900;
-                color: #8b0000 !important; /* Vermelho mais escuro para impressão */
-                text-transform: uppercase;
-                letter-spacing: 2px;
+                font-family: 'Arial', sans-serif;
+                font-size: 1.8em;
+                font-weight: bold;
+                color: #8b0000 !important;
                 margin: 0;
                 line-height: 1.2;
-                -webkit-print-color-adjust: exact;
-                color-adjust: exact;
             }
             
             .logo-subtitle-print {
-                font-family: 'Courier New', monospace;
-                font-size: 1em;
+                font-family: 'Arial', sans-serif;
+                font-size: 0.9em;
                 font-weight: bold;
                 color: #343a40 !important;
-                letter-spacing: 1px;
                 margin-top: 5px;
-                text-transform: uppercase;
-                -webkit-print-color-adjust: exact;
-                color-adjust: exact;
             }
             
-            /* Esconder totais zerados na impressão */
             .total-section p:has(span:contains("0")) {
                 display: none !important;
             }
@@ -395,7 +426,6 @@
                 padding-top: 10px;
             }
             
-            /* Informações da caixa organizadas */
             .info-section-print {
                 display: block !important;
                 text-align: center;
@@ -405,13 +435,21 @@
                 border-radius: 5px;
             }
             
-            .info-section-print h2 {
-                margin-top: 0;
+            .date-conferente-section {
+                display: block !important;
+                text-align: center;
+                margin-bottom: 20px;
+                border: 1px solid #000;
+                padding: 10px;
+                border-radius: 5px;
             }
         }
         
-        /* Classe para esconder elementos na tela normal */
         .info-section-print {
+            display: none;
+        }
+        
+        .date-conferente-section {
             display: none;
         }
         
@@ -421,6 +459,14 @@
         
         /* Responsividade */
         @media (max-width: 480px) {
+            .splash-logo {
+                font-size: 2.5em;
+            }
+            
+            .splash-subtitle {
+                font-size: 1em;
+            }
+            
             .action-buttons {
                 grid-template-columns: 1fr;
             }
@@ -430,25 +476,28 @@
             }
             
             .logo-text {
-                font-size: 2em;
-            }
-            
-            .logo-subtitle {
-                font-size: 1em;
+                font-size: 1.8em;
             }
         }
     </style>
 </head>
 <body>
 
-     <div class="container">
+    <!-- TELA DE ABERTURA -->
+    <div class="splash-screen" id="splash-screen">
+        <div class="splash-logo">JBS</div>
+        <div class="splash-subtitle">Novos Negócios</div>
+        <div class="splash-loading"></div>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="container">
         <div class="logo-container">
             <div class="logo-text">
                 CASINGS
             </div>
             <div class="logo-subtitle">FROM JBS</div>
             
-            <!-- Logo especial para impressão -->
             <div class="logo-print-only">
                 <div class="logo-text-print">CASINGS</div>
                 <div class="logo-subtitle-print">FROM JBS</div>
@@ -463,16 +512,23 @@
             <h2>Informações da Caixa</h2>
             <input type="number" id="box-number" placeholder="Número da Caixa" onkeyup="salvarDados()">
             <input type="text" id="owner-name" placeholder="Contador" onkeyup="salvarDados()">
+        </div>
+
+        <div class="conferente-section">
+            <h2>Informações da Contagem</h2>
             <input type="text" id="conferente-name" placeholder="Conferente" onkeyup="salvarDados()">
         </div>
 
-        <!-- SEÇÃO PARA IMPRESSÃO APENAS - INFORMAÇÕES DA CAIXA COM CORTE -->
         <div class="info-section-print" id="info-section-print">
             <h2>Informações da Caixa</h2>
             <p><strong>Número da Caixa:</strong> <span id="print-box-number"></span></p>
             <p><strong>Contador:</strong> <span id="print-owner-name"></span></p>
+        </div>
+
+        <div class="date-conferente-section" id="date-conferente-section">
+            <h2>Informações da Contagem</h2>
+            <p><strong>Data da Contagem:</strong> <span id="print-data-contagem"></span></p>
             <p><strong>Conferente:</strong> <span id="print-conferente-name"></span></p>
-            <p><strong>Tipo de Corte:</strong> <span id="print-corte-principal">-</span></p>
         </div>
 
         <div class="input-section">
@@ -533,6 +589,7 @@
         const ownerNameInput = document.getElementById('owner-name');
         const conferenteNameInput = document.getElementById('conferente-name');
         const statusBar = document.getElementById('status-bar');
+        const splashScreen = document.getElementById('splash-screen');
 
         // FUNÇÃO PARA DETECTAR ENTER E LANÇAR O MAÇO
         function handleEnterKey(event) {
@@ -610,26 +667,24 @@
                 tipo: selectedTipo, 
                 metros: selectedMetragem 
             });
+
             renderList();
             updateTotals();
             salvarDados();
+            
+            // Limpar campos após adicionar
             quantidadeInput.value = '';
             quantidadeInput.focus();
         }
 
         function renderList() {
             macoList.innerHTML = '';
-            if (lancamentos.length === 0) {
-                const li = document.createElement('li');
-                li.innerHTML = '<span style="color: #6c757d; text-align: center; width: 100%;">Nenhum maço adicionado</span>';
-                macoList.appendChild(li);
-                return;
-            }
-            
             lancamentos.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<span><strong>${item.quantidade}x</strong> ${item.tipo} - ${item.metros}</span>
-                              <button class="delete-btn" onclick="removerEntrada(${item.id})">✖</button>`;
+                li.innerHTML = `
+                    <span>${item.quantidade} maço(s) - ${item.tipo} - ${item.metros}</span>
+                    <button class="delete-btn" onclick="removerEntrada(${item.id})">×</button>
+                `;
                 macoList.appendChild(li);
             });
         }
@@ -642,227 +697,97 @@
         }
 
         function updateTotals() {
-            // CORREÇÃO AQUI: A ordem estava trocada
-            let totais = { 
-                '90m': 0, 
-                '50m': 0, 
-                '30m': 0, 
+            const totals = {
+                '90m': 0,
+                '50m': 0,
+                '30m': 0,
                 '15+15m': 0,
-                '9+9m': 0 
+                '9+9m': 0
             };
-            
+
             lancamentos.forEach(item => {
-                if (item.metros in totais) {
-                    totais[item.metros] += item.quantidade;
+                if (totals.hasOwnProperty(item.metros)) {
+                    totals[item.metros] += item.quantidade;
                 }
             });
-            
-            // CORREÇÃO: Agora cada total vai para o elemento correto
-            document.getElementById('total-90m').textContent = totais['90m'];
-            document.getElementById('total-50m').textContent = totais['50m'];
-            document.getElementById('total-30m').textContent = totais['30m'];
-            document.getElementById('total-1515m').textContent = totais['15+15m'];
-            document.getElementById('total-99m').textContent = totais['9+9m'];
-            
-            const totalGeral = totais['90m'] + totais['50m'] + totais['30m'] + totais['15+15m'] + totais['9+9m'];
+
+            document.getElementById('total-90m').textContent = totals['90m'];
+            document.getElementById('total-50m').textContent = totals['50m'];
+            document.getElementById('total-30m').textContent = totals['30m'];
+            document.getElementById('total-1515m').textContent = totals['15+15m'];
+            document.getElementById('total-99m').textContent = totals['9+9m'];
+
+            const totalGeral = Object.values(totals).reduce((sum, value) => sum + value, 0);
             document.getElementById('total-geral').textContent = totalGeral;
-            
-            // CALCULAR TOTAL CONVERTIDO PARA MAÇOS DE 30m
+
+            // FÓRMULA CORRETA: quantidade × metragem ÷ 30
             let totalConvertido = 0;
-            lancamentos.forEach(item => {
-                // Extrair o valor numérico da metragem
-                let metros = 0;
-                if (item.metros === '30m') {
-                    metros = 30;
-                } else if (item.metros === '50m') {
-                    metros = 50;
-                } else if (item.metros === '15+15m') {
-                    metros = 30; // 15+15m = 30 metros
-                } else if (item.metros === '90m') {
-                    metros = 90;
-                } else if (item.metros === '9+9m') {
-                    metros = 18; // 9+9m = 18 metros
-                }
-                
-                // Fórmula: (quantidade * metros) / 30
-                totalConvertido += (item.quantidade * metros) / 30;
-            });
             
-            // Arredondar para 2 casas decimais
-            totalConvertido = Math.round(totalConvertido * 100) / 100;
-            document.getElementById('total-convertido').textContent = totalConvertido;
+            // 90m: quantidade × 90 ÷ 30 = quantidade × 3
+            totalConvertido += totals['90m'] * 3;
+            
+            // 50m: quantidade × 50 ÷ 30 = quantidade × 1.666...
+            totalConvertido += totals['50m'] * (50/30);
+            
+            // 30m: quantidade × 30 ÷ 30 = quantidade × 1
+            totalConvertido += totals['30m'] * 1;
+            
+            // 15+15m: quantidade × 30 ÷ 30 = quantidade × 1
+            totalConvertido += totals['15+15m'] * 1;
+            
+            // 9+9m: quantidade × 18 ÷ 30 = quantidade × 0.6
+            totalConvertido += totals['9+9m'] * (18/30);
+
+            // ARREDONDAMENTO APENAS NO VALOR FINAL
+            const totalArredondado = Math.round(totalConvertido);
+            document.getElementById('total-convertido').textContent = totalArredondado;
         }
 
-        // FUNÇÃO PARA PREPARAR IMPRESSÃO
-        function prepararImpressao() {
-            // Atualiza informações da caixa para impressão
-            document.getElementById('print-box-number').textContent = boxNumberInput.value;
-            document.getElementById('print-owner-name').textContent = ownerNameInput.value;
-            document.getElementById('print-conferente-name').textContent = conferenteNameInput.value;
-            
-            // Determina o tipo de corte principal
-            let tiposCorte = {};
-            lancamentos.forEach(item => {
-                tiposCorte[item.tipo] = (tiposCorte[item.tipo] || 0) + item.quantidade;
-            });
-            
-            let cortePrincipal = '-';
-            let maiorQuantidade = 0;
-            for (let tipo in tiposCorte) {
-                if (tiposCorte[tipo] > maiorQuantidade) {
-                    maiorQuantidade = tiposCorte[tipo];
-                    cortePrincipal = tipo;
-                }
-            }
-            
-            document.getElementById('print-corte-principal').textContent = cortePrincipal;
-            
-            // Esconde totais zerados na impressão
-            const totais = ['90m', '50m', '30m', '1515m', '99m'];
-            totais.forEach(metragem => {
-                const elemento = document.getElementById(`total-${metragem}`);
-                const linha = elemento.closest('p');
-                if (parseInt(elemento.textContent) === 0) {
-                    linha.style.display = 'none';
-                } else {
-                    linha.style.display = 'flex';
-                }
-            });
-        }
-
+        // FUNÇÃO PARA IMPRIMIR RELATÓRIO
         function imprimirRelatorio() {
-            prepararImpressao();
+            // Atualizar informações da caixa para impressão
+            document.getElementById('print-box-number').textContent = boxNumberInput.value || '-';
+            document.getElementById('print-owner-name').textContent = ownerNameInput.value || '-';
+            document.getElementById('print-conferente-name').textContent = conferenteNameInput.value || '-';
+            
+            // Adicionar data atual
+            const dataAtual = new Date();
+            const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
+            document.getElementById('print-data-contagem').textContent = dataFormatada;
+            
+            // Chamar a impressão
             window.print();
         }
 
-        // FUNÇÃO PARA ENVIAR E-MAIL (OPÇÃO 1 - SIMPLES)
         function enviarEmailComPDF() {
-            if (!boxNumberInput.value) {
-                alert('Por favor, preencha o número da caixa antes de enviar o e-mail.');
-                return;
-            }
-            
-            if (lancamentos.length === 0) {
-                alert('Por favor, adicione pelo menos um maço antes de enviar o e-mail.');
-                return;
-            }
-            
-            // Gerar o PDF
-            const doc = new jsPDF();
-            
-            // Cabeçalho
-            doc.setFontSize(16);
-            doc.setTextColor(200, 16, 46); // Vermelho JBS
-            doc.text('CASINGS FROM JBS', 105, 15, { align: 'center' });
-            
-            doc.setFontSize(14);
-            doc.setTextColor(0, 0, 0);
-            doc.text('RELATÓRIO DE CONTAGEM DE MAÇOS', 105, 25, { align: 'center' });
-            
-            // Informações da Caixa
-            doc.setFontSize(12);
-            doc.text(`Número da Caixa: ${boxNumberInput.value}`, 20, 40);
-            doc.text(`Contador: ${ownerNameInput.value}`, 20, 48);
-            doc.text(`Conferente: ${conferenteNameInput.value}`, 20, 56);
-            doc.text(`Data: ${new Date().toLocaleDateString('pt-BR')}`, 20, 64);
-            
-            // Lançamentos
-            let y = 85;
-            doc.setFontSize(11);
-            doc.setTextColor(100, 100, 100);
-            doc.text('LANÇAMENTOS:', 20, y);
-            y += 10;
-            
-            lancamentos.forEach((item, index) => {
-                if (y > 250) {
-                    doc.addPage();
-                    y = 20;
-                }
-                doc.text(`${index + 1}. ${item.quantidade}x ${item.tipo} - ${item.metros}`, 25, y);
-                y += 6;
-            });
-            
-            // Totais
-            y = y + 10;
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text('TOTAIS:', 20, y);
-            y += 8;
-            
-            const totais = ['90m', '50m', '30m', '15+15m', '9+9m'];
-            totais.forEach(metragem => {
-                const total = document.getElementById(`total-${metragem.replace('+', '')}`).textContent;
-                if (parseInt(total) > 0) {
-                    doc.text(`• Maços ${metragem}: ${total}`, 25, y);
-                    y += 6;
-                }
-            });
-            
-            y += 4;
-            doc.setFontSize(13);
-            doc.setFont(undefined, 'bold');
-            doc.text(`TOTAL GERAL: ${document.getElementById('total-geral').textContent} maços`, 25, y);
-            y += 8;
-            doc.setTextColor(40, 167, 69); // Verde
-            doc.text(`TOTAL CONVERTIDO: ${document.getElementById('total-convertido').textContent} maços (30m)`, 25, y);
-            
-            // Preparar dados do e-mail
-            const subject = `Relatório de Maços - Caixa ${boxNumberInput.value}`;
-            const body = 
-`RELATÓRIO DE CONTAGEM DE MAÇOS - CASINGS FROM JBS
-
-Número da Caixa: ${boxNumberInput.value}
-Contador: ${ownerNameInput.value}
-Conferente: ${conferenteNameInput.value}
-Data: ${new Date().toLocaleDateString('pt-BR')}
-
-TOTAIS:
-- Maços 90m: ${document.getElementById('total-90m').textContent}
-- Maços 50m: ${document.getElementById('total-50m').textContent}
-- Maços 30m: ${document.getElementById('total-30m').textContent}
-- Maços 15+15m: ${document.getElementById('total-1515m').textContent}
-- Maços 9+9m: ${document.getElementById('total-99m').textContent}
-
-TOTAL GERAL: ${document.getElementById('total-geral').textContent} maços
-TOTAL CONVERTIDO: ${document.getElementById('total-convertido').textContent} maços (30m)
-
-Segue em anexo o relatório completo em PDF.
-
---
-Enviado automaticamente pelo Sistema de Contagem JBS`;
-
-            // Abrir cliente de e-mail
-            const mailtoLink = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-            window.location.href = mailtoLink;
-            
-            // Mostrar mensagem de sucesso
-            statusBar.textContent = 'Cliente de e-mail aberto. Anexe o PDF manualmente.';
-            statusBar.style.display = 'block';
-            setTimeout(() => {
-                statusBar.style.display = 'none';
-            }, 5000);
+            alert('Funcionalidade de e-mail será implementada em breve.');
         }
 
         function resetarContagem() {
-            if (confirm("ATENÇÃO!\nIsso apagará permanentemente todos os dados salvos. Deseja continuar?")) {
+            if (confirm('Tem certeza que deseja resetar toda a contagem?')) {
                 lancamentos = [];
                 boxNumberInput.value = '';
                 ownerNameInput.value = '';
                 conferenteNameInput.value = '';
-                quantidadeInput.value = '';
-                document.querySelectorAll('.select-group button').forEach(btn => {
-                    btn.classList.remove('selected');
-                });
-                selectedTipo = null;
-                selectedMetragem = null;
                 renderList();
                 updateTotals();
                 salvarDados();
             }
         }
 
-        // CARREGAR DADOS QUANDO A PÁGINA É ABERTA
-        window.onload = carregarDados;
+        // REMOVER SPLASH SCREEN APÓS 2 SEGUNDOS
+        setTimeout(function() {
+            splashScreen.style.display = 'none';
+        }, 2000);
+
+        // Inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            carregarDados();
+            // O foco no input será automático após a animação
+            setTimeout(() => {
+                quantidadeInput.focus();
+            }, 2500);
+        });
     </script>
 </body>
 </html>
