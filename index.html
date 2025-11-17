@@ -5,6 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Contagem de Maços - Casings</title>
     
+    <!-- CONFIGURAÇÕES PARA WEB APP -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="JBS">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#c8102e">
+    <meta name="msapplication-TileColor" content="#c8102e">
+    <meta name="application-name" content="Casings">
+    <meta name="msapplication-TileImage" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjYzgxMDJlIi8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0OCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkpCUzwvdGV4dD4KPC9zdmc+">
+    
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjYzgxMDJlIi8+Cjx0ZXh0IHg9IjE2IiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SkJTPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjYzgxMDJlIi8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0OCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkpCUzwvdGV4dD4KPC9zdmc+">
+    
     <!-- INCLUINDO A BIBLIOTECA jsPDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
@@ -23,54 +36,6 @@
             --light-gray: #6c757d;
         }
         
-        /* ANIMAÇÃO DE ABERTURA - SIMPLIFICADA */
-        .splash-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-        
-        .splash-logo {
-            font-family: 'Arial', sans-serif;
-            font-size: 4em;
-            font-weight: bold;
-            color: #c8102e;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-        
-        .splash-subtitle {
-            font-family: 'Arial', sans-serif;
-            font-size: 1.2em;
-            color: #333;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .splash-loading {
-            margin-top: 20px;
-            width: 40px;
-            height: 40px;
-            border: 3px solid rgba(200, 16, 46, 0.3);
-            border-top: 3px solid #c8102e;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        /* ESTILOS PRINCIPAIS */
         body {
             font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
             background-color: var(--secondary-color); 
@@ -79,6 +44,11 @@
             padding: 15px;
             display: flex; 
             justify-content: center;
+            /* Suporte para notch e áreas seguras */
+            padding-top: env(safe-area-inset-top);
+            padding-bottom: env(safe-area-inset-bottom);
+            padding-left: env(safe-area-inset-left);
+            padding-right: env(safe-area-inset-right);
         }
         
         .container {
@@ -100,23 +70,110 @@
             padding: 15px;
             border-radius: 8px;
             margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .logo-text {
-            font-family: 'Arial', sans-serif;
-            font-size: 2.2em;
-            font-weight: bold;
+            font-family: 'Arial Black', 'Segoe UI', sans-serif;
+            font-size: 2.5em;
+            font-weight: 900;
             color: var(--primary-color);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             margin: 0;
             line-height: 1.2;
+            position: absolute;
+            opacity: 0;
+            animation: logoCycle 6s ease-in-out infinite;
+        }
+        
+        .logo-casings {
+            animation-delay: 0s;
+        }
+        
+        .logo-jbs {
+            animation-delay: 3s;
+            font-size: 2.2em;
+        }
+        
+        @keyframes logoCycle {
+            0%, 45% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50%, 95% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         
         .logo-subtitle {
-            font-family: 'Arial', sans-serif;
-            font-size: 1em;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
             font-weight: bold;
             color: var(--dark-gray);
+            letter-spacing: 2px;
             margin-top: 5px;
+            text-transform: uppercase;
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            opacity: 0;
+            animation: subtitleCycle 6s ease-in-out infinite;
+        }
+        
+        .subtitle-casings {
+            animation-delay: 0s;
+        }
+        
+        .subtitle-jbs {
+            animation-delay: 3s;
+        }
+        
+        @keyframes subtitleCycle {
+            0%, 45% {
+                opacity: 1;
+            }
+            50%, 95% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+        
+        /* Efeito de brilho */
+        .logo-glow {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(200, 16, 46, 0.2), transparent);
+            animation: glowSlide 6s ease-in-out infinite;
+        }
+        
+        @keyframes glowSlide {
+            0%, 45% {
+                left: -100%;
+            }
+            50% {
+                left: 0%;
+            }
+            55%, 100% {
+                left: 100%;
+            }
         }
         
         h1, h2, h3 { 
@@ -343,29 +400,8 @@
             display: none;
         }
         
-        /* ESTILOS PARA AS SEÇÕES DE INFORMAÇÕES NA TELA */
-        .info-section {
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f8f9fa;
-        }
-        
-        .conferente-section {
-            margin-bottom: 20px;
-            border: 1px solid var(--border-color);
-            padding: 15px;
-            border-radius: 8px;
-            background-color: #f0f0f0;
-        }
-        
         /* ESTILOS PARA IMPRESSÃO */
         @media print {
-            .splash-screen {
-                display: none !important;
-            }
-            
             body { 
                 background-color: white;
                 padding: 0;
@@ -378,8 +414,10 @@
                 border: 1px solid #000; 
                 max-width: 100%;
                 padding: 15px;
+                margin: 0 auto;
             }
             
+            /* Esconder elementos desnecessários */
             .input-section, 
             .action-buttons, 
             .delete-btn, 
@@ -387,7 +425,9 @@
             .status-bar,
             .summary-section,
             .info-section,
-            .conferente-section {
+            .logo-glow,
+            .logo-jbs,
+            .subtitle-jbs {
                 display: none !important;
             }
             
@@ -397,35 +437,49 @@
                 text-align: center;
                 background: #f8f9fa !important;
                 border: 2px solid #c8102e !important;
+                padding: 10px;
+                height: auto !important;
+                position: static !important;
             }
             
+            /* Mostrar apenas CASINGS na impressão */
+            .logo-casings {
+                position: static !important;
+                opacity: 1 !important;
+                animation: none !important;
+                display: block !important;
+            }
+            
+            .subtitle-casings {
+                position: static !important;
+                opacity: 1 !important;
+                animation: none !important;
+                display: block !important;
+            }
+            
+            /* Logo na impressão */
             .logo-text-print {
-                font-family: 'Arial', sans-serif;
-                font-size: 1.8em;
-                font-weight: bold;
+                font-family: 'Arial Black', 'Segoe UI', sans-serif;
+                font-size: 2em;
+                font-weight: 900;
                 color: #8b0000 !important;
+                text-transform: uppercase;
+                letter-spacing: 2px;
                 margin: 0;
                 line-height: 1.2;
             }
             
             .logo-subtitle-print {
-                font-family: 'Arial', sans-serif;
-                font-size: 0.9em;
+                font-family: 'Courier New', monospace;
+                font-size: 1em;
                 font-weight: bold;
                 color: #343a40 !important;
+                letter-spacing: 1px;
                 margin-top: 5px;
+                text-transform: uppercase;
             }
             
-            .total-section p:has(span:contains("0")) {
-                display: none !important;
-            }
-            
-            .total-section .grand-total {
-                border-top: 2px solid #000;
-                margin-top: 10px;
-                padding-top: 10px;
-            }
-            
+            /* Informações da caixa organizadas - ESTILO ORIGINAL */
             .info-section-print {
                 display: block !important;
                 text-align: center;
@@ -435,7 +489,14 @@
                 border-radius: 5px;
             }
             
-            .date-conferente-section {
+            .info-section-print h2 {
+                margin-top: 0;
+                border-bottom: 1px solid #000;
+                padding-bottom: 5px;
+            }
+            
+            /* Informações da contagem separadas */
+            .contagem-section-print {
                 display: block !important;
                 text-align: center;
                 margin-bottom: 20px;
@@ -443,13 +504,28 @@
                 padding: 10px;
                 border-radius: 5px;
             }
+            
+            .contagem-section-print h2 {
+                margin-top: 0;
+                border-bottom: 1px solid #000;
+                padding-bottom: 5px;
+            }
+            
+            /* Esconder totais zerados na impressão */
+            .total-section p:has(span:contains("0")) {
+                display: none !important;
+            }
+            
+            .total-section .grand-total {
+                border-top: 2px solid #000;
+                margin-top: 10px;
+                padding-top: 10px;
+            }
         }
         
-        .info-section-print {
-            display: none;
-        }
-        
-        .date-conferente-section {
+        /* Classe para esconder elementos na tela normal */
+        .info-section-print,
+        .contagem-section-print {
             display: none;
         }
         
@@ -459,14 +535,6 @@
         
         /* Responsividade */
         @media (max-width: 480px) {
-            .splash-logo {
-                font-size: 2.5em;
-            }
-            
-            .splash-subtitle {
-                font-size: 1em;
-            }
-            
             .action-buttons {
                 grid-template-columns: 1fr;
             }
@@ -476,28 +544,42 @@
             }
             
             .logo-text {
+                font-size: 2em;
+            }
+            
+            .logo-jbs {
                 font-size: 1.8em;
+            }
+            
+            .logo-subtitle {
+                font-size: 1em;
+            }
+        }
+
+        /* Estilos específicos para quando estiver em modo standalone (tela inicial) */
+        @media all and (display-mode: standalone) {
+            body {
+                padding-top: 30px; /* Compensa a barra de status */
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- TELA DE ABERTURA -->
-    <div class="splash-screen" id="splash-screen">
-        <div class="splash-logo">JBS</div>
-        <div class="splash-subtitle">Novos Negócios</div>
-        <div class="splash-loading"></div>
-    </div>
-
-    <!-- CONTEÚDO PRINCIPAL -->
-    <div class="container">
+     <div class="container">
         <div class="logo-container">
-            <div class="logo-text">
-                CASINGS
-            </div>
-            <div class="logo-subtitle">FROM JBS</div>
+            <!-- Logo CASINGS -->
+            <div class="logo-text logo-casings">CASINGS</div>
+            <div class="logo-subtitle subtitle-casings">FROM JBS</div>
             
+            <!-- Logo JBS NOVOS NEGÓCIOS -->
+            <div class="logo-text logo-jbs">JBS NOVOS NEGÓCIOS</div>
+            <div class="logo-subtitle subtitle-jbs">INOVAÇÃO E QUALIDADE</div>
+            
+            <!-- Efeito de brilho -->
+            <div class="logo-glow"></div>
+            
+            <!-- Logo especial para impressão -->
             <div class="logo-print-only">
                 <div class="logo-text-print">CASINGS</div>
                 <div class="logo-subtitle-print">FROM JBS</div>
@@ -512,20 +594,19 @@
             <h2>Informações da Caixa</h2>
             <input type="number" id="box-number" placeholder="Número da Caixa" onkeyup="salvarDados()">
             <input type="text" id="owner-name" placeholder="Contador" onkeyup="salvarDados()">
-        </div>
-
-        <div class="conferente-section">
-            <h2>Informações da Contagem</h2>
             <input type="text" id="conferente-name" placeholder="Conferente" onkeyup="salvarDados()">
         </div>
 
+        <!-- SEÇÃO PARA IMPRESSÃO APENAS - INFORMAÇÕES DA CAIXA COM CORTE -->
         <div class="info-section-print" id="info-section-print">
             <h2>Informações da Caixa</h2>
             <p><strong>Número da Caixa:</strong> <span id="print-box-number"></span></p>
             <p><strong>Contador:</strong> <span id="print-owner-name"></span></p>
+            <p><strong>Tipo de Corte:</strong> <span id="print-corte-principal">-</span></p>
         </div>
 
-        <div class="date-conferente-section" id="date-conferente-section">
+        <!-- SEÇÃO PARA IMPRESSÃO APENAS - INFORMAÇÕES DA CONTAGEM -->
+        <div class="contagem-section-print" id="contagem-section-print">
             <h2>Informações da Contagem</h2>
             <p><strong>Data da Contagem:</strong> <span id="print-data-contagem"></span></p>
             <p><strong>Conferente:</strong> <span id="print-conferente-name"></span></p>
@@ -548,6 +629,17 @@
                 <button type="button" onclick="selectMetragem(this)">15+15m</button>
                 <button type="button" onclick="selectMetragem(this)">9+9m</button>
             </div>
+            <h3>Cor do Maço</h3>
+            <div class="select-group" id="color-group">
+                <button type="button" onclick="selectCor(this)">CZ</button>
+                <button type="button" onclick="selectCor(this)">AZ</button>
+                <button type="button" onclick="selectCor(this)">VD</button>
+                <button type="button" onclick="selectCor(this)">AM</button>
+                <button type="button" onclick="selectCor(this)">PT</button>
+                <button type="button" onclick="selectCor(this)">BC</button>
+                <button type="button" onclick="selectCor(this)">VM</button>
+            </div>
+            <div id="selected-colors-display" style="margin: 10px 0; font-weight: bold; text-align: center; min-height: 20px;"></div>
             <button class="add-button" onclick="adicionarEntrada()">Adicionar</button>
         </div>
 
@@ -574,7 +666,7 @@
         </div>
     </div>
 
-    <!-- LÓGICA (JAVASCRIPT) -->
+    <!-- LÓGICA (JAVASCRIPT) - MANTIDA IGUAL -->
     <script>
         // Inicializando o jsPDF
         const { jsPDF } = window.jspdf;
@@ -582,6 +674,7 @@
         let lancamentos = [];
         let selectedTipo = null;
         let selectedMetragem = null;
+        let selectedCores = [];
 
         const macoList = document.getElementById('maco-list');
         const quantidadeInput = document.getElementById('quantidade');
@@ -589,7 +682,19 @@
         const ownerNameInput = document.getElementById('owner-name');
         const conferenteNameInput = document.getElementById('conferente-name');
         const statusBar = document.getElementById('status-bar');
-        const splashScreen = document.getElementById('splash-screen');
+        const selectedColorsDisplay = document.getElementById('selected-colors-display');
+
+        // FUNÇÃO PARA DETECTAR SE ESTÁ EM MODO APP (tela inicial)
+        function isRunningStandalone() {
+            return (window.matchMedia('(display-mode: standalone)').matches) || 
+                   (window.navigator.standalone) || 
+                   (document.referrer.includes('android-app://'));
+        }
+
+        // Mostrar mensagem se estiver em modo app
+        if (isRunningStandalone()) {
+            console.log('Executando como Web App');
+        }
 
         // FUNÇÃO PARA DETECTAR ENTER E LANÇAR O MAÇO
         function handleEnterKey(event) {
@@ -614,6 +719,33 @@
             });
             button.classList.add('selected');
             selectedMetragem = button.textContent;
+        }
+
+        function selectCor(button) {
+            const cor = button.textContent;
+            
+            // Verifica se a cor já está selecionada
+            const index = selectedCores.indexOf(cor);
+            
+            if (index === -1) {
+                // Adiciona a cor
+                selectedCores.push(cor);
+                button.classList.add('selected');
+            } else {
+                // Remove a cor
+                selectedCores.splice(index, 1);
+                button.classList.remove('selected');
+            }
+            
+            updateSelectedColorsDisplay();
+        }
+
+        function updateSelectedColorsDisplay() {
+            if (selectedCores.length > 0) {
+                selectedColorsDisplay.textContent = 'Cores selecionadas: ' + selectedCores.join(', ');
+            } else {
+                selectedColorsDisplay.textContent = '';
+            }
         }
 
         // FUNÇÃO PARA SALVAR OS DADOS NO NAVEGADOR
@@ -660,12 +792,17 @@
                 alert('Selecione a metragem.'); 
                 return; 
             }
+            if (selectedCores.length === 0) { 
+                alert('Selecione pelo menos uma cor.'); 
+                return; 
+            }
 
             lancamentos.push({ 
                 id: Date.now(), 
                 quantidade, 
                 tipo: selectedTipo, 
-                metros: selectedMetragem 
+                metros: selectedMetragem,
+                cores: [...selectedCores] // Cria uma cópia do array
             });
 
             renderList();
@@ -682,7 +819,9 @@
             lancamentos.forEach(item => {
                 const li = document.createElement('li');
                 li.innerHTML = `
-                    <span>${item.quantidade} maço(s) - ${item.tipo} - ${item.metros}</span>
+                    <div>
+                        <strong>${item.quantidade}x</strong> - ${item.tipo} - ${item.metros} - ${item.cores.join(', ')}
+                    </div>
                     <button class="delete-btn" onclick="removerEntrada(${item.id})">×</button>
                 `;
                 macoList.appendChild(li);
@@ -720,74 +859,214 @@
             const totalGeral = Object.values(totals).reduce((sum, value) => sum + value, 0);
             document.getElementById('total-geral').textContent = totalGeral;
 
-            // FÓRMULA CORRETA: quantidade × metragem ÷ 30
+            // Calcular total convertido usando a fórmula correta: (quantidade * metragem) / 30
             let totalConvertido = 0;
             
-            // 90m: quantidade × 90 ÷ 30 = quantidade × 3
-            totalConvertido += totals['90m'] * 3;
+            lancamentos.forEach(item => {
+                // Extrai apenas o número da metragem (remove o 'm' e trata casos como '15+15m')
+                let metragemNumerica;
+                
+                if (item.metros === '15+15m') {
+                    metragemNumerica = 30; // 15+15m = 30 metros
+                } else if (item.metros === '9+9m') {
+                    metragemNumerica = 18; // 9+9m = 18 metros
+                } else {
+                    metragemNumerica = parseInt(item.metros);
+                }
+                
+                totalConvertido += (item.quantidade * metragemNumerica) / 30;
+            });
             
-            // 50m: quantidade × 50 ÷ 30 = quantidade × 1.666...
-            totalConvertido += totals['50m'] * (50/30);
-            
-            // 30m: quantidade × 30 ÷ 30 = quantidade × 1
-            totalConvertido += totals['30m'] * 1;
-            
-            // 15+15m: quantidade × 30 ÷ 30 = quantidade × 1
-            totalConvertido += totals['15+15m'] * 1;
-            
-            // 9+9m: quantidade × 18 ÷ 30 = quantidade × 0.6
-            totalConvertido += totals['9+9m'] * (18/30);
-
-            // ARREDONDAMENTO APENAS NO VALOR FINAL
+            // Arredondamento matemático correto (21.3333 → 21, 21.6666 → 22)
             const totalArredondado = Math.round(totalConvertido);
             document.getElementById('total-convertido').textContent = totalArredondado;
         }
 
-        // FUNÇÃO PARA IMPRIMIR RELATÓRIO
         function imprimirRelatorio() {
-            // Atualizar informações da caixa para impressão
+            // Atualizar informações para impressão
             document.getElementById('print-box-number').textContent = boxNumberInput.value || '-';
             document.getElementById('print-owner-name').textContent = ownerNameInput.value || '-';
             document.getElementById('print-conferente-name').textContent = conferenteNameInput.value || '-';
             
-            // Adicionar data atual
-            const dataAtual = new Date();
-            const dataFormatada = dataAtual.toLocaleDateString('pt-BR');
-            document.getElementById('print-data-contagem').textContent = dataFormatada;
+            // Data atual
+            const dataAtual = new Date().toLocaleDateString('pt-BR');
+            document.getElementById('print-data-contagem').textContent = dataAtual;
             
-            // Chamar a impressão
+            // Determinar tipo de corte principal
+            const tipos = lancamentos.map(item => item.tipo);
+            const cortePrincipal = tipos.length > 0 ? tipos[0] : '-';
+            document.getElementById('print-corte-principal').textContent = cortePrincipal;
+
+            // Ocultar totais zerados na impressão
+            const totals = {
+                '90m': parseInt(document.getElementById('total-90m').textContent),
+                '50m': parseInt(document.getElementById('total-50m').textContent),
+                '30m': parseInt(document.getElementById('total-30m').textContent),
+                '15+15m': parseInt(document.getElementById('total-1515m').textContent),
+                '9+9m': parseInt(document.getElementById('total-99m').textContent)
+            };
+
+            // Esconder elementos com valor 0
+            Object.keys(totals).forEach(metragem => {
+                const element = document.querySelector(`#total-${metragem.replace('+', '')}`).parentElement;
+                if (totals[metragem] === 0) {
+                    element.style.display = 'none';
+                } else {
+                    element.style.display = 'flex';
+                }
+            });
+
             window.print();
+
+            // Restaurar display após impressão
+            setTimeout(() => {
+                Object.keys(totals).forEach(metragem => {
+                    const element = document.querySelector(`#total-${metragem.replace('+', '')}`).parentElement;
+                    element.style.display = 'flex';
+                });
+            }, 100);
         }
 
         function enviarEmailComPDF() {
-            alert('Funcionalidade de e-mail será implementada em breve.');
+            // Criar PDF
+            const doc = new jsPDF();
+            
+            // Adicionar logo e título
+            doc.setFontSize(20);
+            doc.setTextColor(200, 16, 46); // Vermelho JBS
+            doc.text('CASINGS - FROM JBS', 105, 20, { align: 'center' });
+            
+            doc.setFontSize(16);
+            doc.setTextColor(0, 0, 0);
+            doc.text('RELATÓRIO DE CONTAGEM DE MAÇOS', 105, 30, { align: 'center' });
+            
+            // Informações da caixa
+            doc.setFontSize(12);
+            doc.text(`Número da Caixa: ${boxNumberInput.value || '-'}`, 20, 50);
+            doc.text(`Contador: ${ownerNameInput.value || '-'}`, 20, 60);
+            
+            // Determinar tipo de corte principal
+            const tipos = lancamentos.map(item => item.tipo);
+            const cortePrincipal = tipos.length > 0 ? tipos[0] : '-';
+            doc.text(`Tipo de Corte: ${cortePrincipal}`, 20, 70);
+            
+            // Informações da contagem
+            doc.text(`Data da Contagem: ${new Date().toLocaleDateString('pt-BR')}`, 20, 85);
+            doc.text(`Conferente: ${conferenteNameInput.value || '-'}`, 20, 95);
+            
+            // Tabela de lançamentos
+            const tableColumn = ["Qtd", "Tipo", "Metragem", "Cores"];
+            const tableRows = [];
+            
+            lancamentos.forEach(item => {
+                const row = [
+                    item.quantidade.toString(),
+                    item.tipo,
+                    item.metros,
+                    item.cores.join(', ')
+                ];
+                tableRows.push(row);
+            });
+            
+            // Adicionar tabela
+            doc.autoTable({
+                head: [tableColumn],
+                body: tableRows,
+                startY: 110,
+                theme: 'grid',
+                headStyles: {
+                    fillColor: [200, 16, 46], // Vermelho JBS
+                    textColor: 255
+                }
+            });
+            
+            // Totais
+            const finalY = doc.lastAutoTable.finalY + 10;
+            
+            // Calcular totais
+            const totals = {
+                '90m': 0, '50m': 0, '30m': 0, '15+15m': 0, '9+9m': 0
+            };
+            
+            let totalConvertido = 0;
+            
+            lancamentos.forEach(item => {
+                if (totals.hasOwnProperty(item.metros)) {
+                    totals[item.metros] += item.quantidade;
+                }
+                
+                let metragemNumerica;
+                if (item.metros === '15+15m') {
+                    metragemNumerica = 30;
+                } else if (item.metros === '9+9m') {
+                    metragemNumerica = 18;
+                } else {
+                    metragemNumerica = parseInt(item.metros);
+                }
+                
+                totalConvertido += (item.quantidade * metragemNumerica) / 30;
+            });
+            
+            const totalGeral = Object.values(totals).reduce((sum, value) => sum + value, 0);
+            const totalArredondado = Math.round(totalConvertido);
+            
+            // Adicionar totais ao PDF (apenas os que têm valor)
+            doc.setFontSize(12);
+            let yPos = finalY;
+            
+            Object.entries(totals).forEach(([metragem, total]) => {
+                if (total > 0) {
+                    doc.text(`Total de Maços (${metragem}): ${total}`, 20, yPos);
+                    yPos += 7;
+                }
+            });
+            
+            doc.text(`Total Geral de Maços: ${totalGeral}`, 20, yPos + 5);
+            doc.text(`Total Convertido: ${totalArredondado}`, 20, yPos + 15);
+            
+            // Salvar PDF
+            const pdfBlob = doc.output('blob');
+            
+            // Criar link para email
+            const email = 'jhonatan.lima@jbs.com.br';
+            const subject = `Contagem de Maços - Caixa ${boxNumberInput.value || 'N/A'}`;
+            const body = `Segue em anexo o relatório de contagem de maços.\n\nNúmero da Caixa: ${boxNumberInput.value || '-'}\nContador: ${ownerNameInput.value || '-'}\nData: ${new Date().toLocaleDateString('pt-BR')}`;
+            
+            // Converter blob para base64
+            const reader = new FileReader();
+            reader.onload = function() {
+                const base64 = reader.result.split(',')[1];
+                
+                // Criar link mailto com anexo
+                const mailtoLink = `mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}&attachment=application/pdf;base64,${base64}`;
+                
+                // Abrir cliente de email
+                window.location.href = mailtoLink;
+            };
+            reader.readAsDataURL(pdfBlob);
         }
 
         function resetarContagem() {
             if (confirm('Tem certeza que deseja resetar toda a contagem?')) {
                 lancamentos = [];
-                boxNumberInput.value = '';
-                ownerNameInput.value = '';
-                conferenteNameInput.value = '';
+                selectedTipo = null;
+                selectedMetragem = null;
+                selectedCores = [];
+                
+                // Limpar seleções visuais
+                document.querySelectorAll('#tipo-group button, #metragem-group button, #color-group button').forEach(btn => {
+                    btn.classList.remove('selected');
+                });
+                
+                updateSelectedColorsDisplay();
                 renderList();
                 updateTotals();
                 salvarDados();
             }
         }
 
-        // REMOVER SPLASH SCREEN APÓS 2 SEGUNDOS
-        setTimeout(function() {
-            splashScreen.style.display = 'none';
-        }, 2000);
-
-        // Inicializar a página
-        document.addEventListener('DOMContentLoaded', function() {
-            carregarDados();
-            // O foco no input será automático após a animação
-            setTimeout(() => {
-                quantidadeInput.focus();
-            }, 2500);
-        });
+        // Carregar dados ao iniciar a página
+        window.onload = carregarDados;
     </script>
 </body>
 </html>
