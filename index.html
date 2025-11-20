@@ -15,7 +15,7 @@
     <meta name="application-name" content="Casings">
     <meta name="msapplication-TileImage" content="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjYzgxMDJlIi8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0OCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkpCUzwvdGV4dD4KPC9zdmc+">
     
-    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiBmaWxsPSIjYzgxMDJlIi8+Cjx0ZXh0IHg9IjE2IiB5PSIyMCIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjE0IiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SkJTPC90ZXh0Pgo8L3N2Zz4=" type="image/svg+xml">
+    <link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlYWN0IHdpZHRoPSIzMiIgaGVpZ2h0PSIzMiIgZmlsbD0iI2M4MTAyZSIvPgo8dGV4dCB4PSIxNiIgeT0iMjAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkpCUzwvdGV4dD4KPC9zdmc+" type="image/svg+xml">
     <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyIiBoZWlnaHQ9IjE5MiIgdmlld0JveD0iMCAwIDE5MiAxOTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSIxOTIiIGhlaWdodD0iMTkyIiBmaWxsPSIjYzgxMDJlIi8+Cjx0ZXh0IHg9Ijk2IiB5PSIxMDAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0OCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkpCUzwvdGV4dD4KPC9zdmc+">
     
     <!-- INCLUINDO A BIBLIOTECA jsPDF -->
@@ -72,7 +72,7 @@
             margin-top: 10px;
             position: relative;
             overflow: hidden;
-            height: 120px;
+            height: 140px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -80,11 +80,9 @@
         
         .logo-text {
             font-family: 'Arial Black', 'Segoe UI', sans-serif;
-            font-size: 2.5em;
             font-weight: 900;
             color: var(--primary-color);
             text-transform: uppercase;
-            letter-spacing: 3px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
             margin: 0;
             line-height: 1.2;
@@ -95,11 +93,41 @@
         
         .logo-casings {
             animation-delay: 0s;
+            font-size: 2.8em;
+            letter-spacing: 4px;
         }
         
         .logo-jbs {
             animation-delay: 3s;
-            font-size: 2.2em;
+            font-size: 3em;
+            letter-spacing: 2px;
+        }
+        
+        .logo-subtitle {
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            color: var(--dark-gray);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: absolute;
+            opacity: 0;
+            animation: subtitleCycle 6s ease-in-out infinite;
+        }
+        
+        .subtitle-casings {
+            animation-delay: 0s;
+            font-size: 1.1em;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+        }
+        
+        .subtitle-jbs {
+            animation-delay: 3s;
+            font-size: 0.9em;
+            bottom: 15px;
+            left: 0;
+            right: 0;
         }
         
         @keyframes logoCycle {
@@ -115,30 +143,6 @@
                 opacity: 1;
                 transform: scale(1);
             }
-        }
-        
-        .logo-subtitle {
-            font-family: 'Courier New', monospace;
-            font-size: 1.1em;
-            font-weight: bold;
-            color: var(--dark-gray);
-            letter-spacing: 2px;
-            margin-top: 5px;
-            text-transform: uppercase;
-            position: absolute;
-            bottom: 15px;
-            left: 0;
-            right: 0;
-            opacity: 0;
-            animation: subtitleCycle 6s ease-in-out infinite;
-        }
-        
-        .subtitle-casings {
-            animation-delay: 0s;
-        }
-        
-        .subtitle-jbs {
-            animation-delay: 3s;
         }
         
         @keyframes subtitleCycle {
@@ -252,6 +256,89 @@
             color: var(--white-color); 
         }
         
+        /* ESTILOS PARA O DROPDOWN DE METRAGEM */
+        .dropdown {
+            position: relative;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .dropdown-toggle {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.2em;
+            font-weight: bold;
+            text-align: center;
+            background-color: var(--white-color);
+            border: 2px solid var(--primary-color);
+            border-radius: 8px;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .dropdown-toggle:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .dropdown-toggle:after {
+            content: "▼";
+            font-size: 0.8em;
+            transition: transform 0.3s ease;
+        }
+        
+        .dropdown-toggle.open:after {
+            transform: rotate(180deg);
+        }
+        
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--white-color);
+            border: 2px solid var(--primary-color);
+            border-top: none;
+            border-radius: 0 0 8px 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1000;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .dropdown-menu.open {
+            max-height: 400px;
+        }
+        
+        .dropdown-option {
+            padding: 15px;
+            font-size: 1.1em;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .dropdown-option:last-child {
+            border-bottom: none;
+        }
+        
+        .dropdown-option:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .dropdown-option.selected {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            font-weight: bold;
+        }
+        
         .add-button {
             width: 100%; 
             padding: 18px; 
@@ -270,6 +357,13 @@
             background-color: #218838;
             transform: translateY(-2px);
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .add-button:disabled {
+            background-color: var(--light-gray);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
         #maco-list { 
@@ -548,11 +642,15 @@
             }
             
             .logo-jbs {
-                font-size: 1.8em;
+                font-size: 2.2em;
             }
             
             .logo-subtitle {
                 font-size: 1em;
+            }
+            
+            .subtitle-jbs {
+                font-size: 0.8em;
             }
         }
 
@@ -573,8 +671,8 @@
             <div class="logo-subtitle subtitle-casings">FROM JBS</div>
             
             <!-- Logo JBS NOVOS NEGÓCIOS -->
-            <div class="logo-text logo-jbs">JBS NOVOS NEGÓCIOS</div>
-            <div class="logo-subtitle subtitle-jbs">INOVAÇÃO E QUALIDADE</div>
+            <div class="logo-text logo-jbs">JBS</div>
+            <div class="logo-subtitle subtitle-jbs">NOVOS NEGÓCIOS</div>
             
             <!-- Efeito de brilho -->
             <div class="logo-glow"></div>
@@ -587,8 +685,6 @@
         </div>
         
         <div class="status-bar" id="status-bar">Dados salvos automaticamente</div>
-        
-        <header><h1>Contagem de Maços</h1></header>
 
         <div class="info-section">
             <h2>Informações da Caixa</h2>
@@ -622,25 +718,20 @@
                 <button type="button" onclick="selectTipo(this)">Grossa</button>
             </div>
             <h3>Metragem</h3>
-            <div class="select-group" id="metragem-group">
-                <button type="button" onclick="selectMetragem(this)">90m</button>
-                <button type="button" onclick="selectMetragem(this)">50m</button>
-                <button type="button" onclick="selectMetragem(this)">30m</button>
-                <button type="button" onclick="selectMetragem(this)">15+15m</button>
-                <button type="button" onclick="selectMetragem(this)">9+9m</button>
+            <div class="dropdown">
+                <button class="dropdown-toggle" id="dropdown-toggle" onclick="toggleDropdown()">
+                    Selecione a Metragem
+                </button>
+                <div class="dropdown-menu" id="dropdown-menu">
+                    <div class="dropdown-option" onclick="selectMetragem('95m')">95m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('90m')">90m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('50m')">50m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('30m')">30m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('15+15m')">15+15m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('9+9m')">9+9m</div>
+                </div>
             </div>
-            <h3>Cor do Maço</h3>
-            <div class="select-group" id="color-group">
-                <button type="button" onclick="selectCor(this)">CZ</button>
-                <button type="button" onclick="selectCor(this)">AZ</button>
-                <button type="button" onclick="selectCor(this)">VD</button>
-                <button type="button" onclick="selectCor(this)">AM</button>
-                <button type="button" onclick="selectCor(this)">PT</button>
-                <button type="button" onclick="selectCor(this)">BC</button>
-                <button type="button" onclick="selectCor(this)">VM</button>
-            </div>
-            <div id="selected-colors-display" style="margin: 10px 0; font-weight: bold; text-align: center; min-height: 20px;"></div>
-            <button class="add-button" onclick="adicionarEntrada()">Adicionar</button>
+            <button class="add-button" onclick="adicionarEntrada()" id="add-button">Adicionar</button>
         </div>
 
         <div class="summary-section">
@@ -650,11 +741,12 @@
 
         <div class="total-section">
             <h2>Totalização</h2>
-            <p>Total de Maços (90m): <span id="total-90m">0</span></p>
-            <p>Total de Maços (50m): <span id="total-50m">0</span></p>
-            <p>Total de Maços (30m): <span id="total-30m">0</span></p>
-            <p>Total de Maços (15+15m): <span id="total-1515m">0</span></p>
-            <p>Total de Maços (9+9m): <span id="total-99m">0</span></p>
+            <div id="dynamic-totals">
+                <!-- Os totais serão gerados dinamicamente aqui -->
+                <p style="text-align: center; color: #6c757d; font-style: italic;">
+                    Nenhum lançamento adicionado
+                </p>
+            </div>
             <p class="grand-total">Total Geral de Maços: <span id="total-geral">0</span></p>
             <p class="converted-total">Total Convertido: <span id="total-convertido">0</span></p>
         </div>
@@ -671,18 +763,45 @@
         // Inicializando o jsPDF
         const { jsPDF } = window.jspdf;
         
+        // Variáveis globais
         let lancamentos = [];
         let selectedTipo = null;
         let selectedMetragem = null;
-        let selectedCores = [];
+        let dropdownOpen = false;
 
+        // Elementos DOM
         const macoList = document.getElementById('maco-list');
         const quantidadeInput = document.getElementById('quantidade');
         const boxNumberInput = document.getElementById('box-number');
         const ownerNameInput = document.getElementById('owner-name');
         const conferenteNameInput = document.getElementById('conferente-name');
         const statusBar = document.getElementById('status-bar');
-        const selectedColorsDisplay = document.getElementById('selected-colors-display');
+        const addButton = document.getElementById('add-button');
+        const dropdownToggle = document.getElementById('dropdown-toggle');
+        const dropdownMenu = document.getElementById('dropdown-menu');
+        const dynamicTotals = document.getElementById('dynamic-totals');
+
+        // FUNÇÃO PARA ABRIR/FECHAR DROPDOWN
+        function toggleDropdown() {
+            dropdownOpen = !dropdownOpen;
+            
+            if (dropdownOpen) {
+                dropdownToggle.classList.add('open');
+                dropdownMenu.classList.add('open');
+            } else {
+                dropdownToggle.classList.remove('open');
+                dropdownMenu.classList.remove('open');
+            }
+        }
+
+        // FECHAR DROPDOWN QUANDO CLICAR FORA
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.dropdown')) {
+                dropdownOpen = false;
+                dropdownToggle.classList.remove('open');
+                dropdownMenu.classList.remove('open');
+            }
+        });
 
         // FUNÇÃO PARA DETECTAR SE ESTÁ EM MODO APP (tela inicial)
         function isRunningStandalone() {
@@ -711,40 +830,42 @@
             });
             button.classList.add('selected');
             selectedTipo = button.textContent;
+            validarFormulario();
         }
 
-        function selectMetragem(button) {
-            document.querySelectorAll('#metragem-group button').forEach(btn => {
-                btn.classList.remove('selected');
+        function selectMetragem(metragem) {
+            selectedMetragem = metragem;
+            
+            // Atualizar texto do botão
+            dropdownToggle.textContent = metragem;
+            
+            // Marcar opção como selecionada
+            document.querySelectorAll('.dropdown-option').forEach(option => {
+                option.classList.remove('selected');
+                if (option.textContent === metragem) {
+                    option.classList.add('selected');
+                }
             });
-            button.classList.add('selected');
-            selectedMetragem = button.textContent;
+            
+            // Fechar dropdown
+            dropdownOpen = false;
+            dropdownToggle.classList.remove('open');
+            dropdownMenu.classList.remove('open');
+            
+            validarFormulario();
         }
 
-        function selectCor(button) {
-            const cor = button.textContent;
+        // VALIDAR FORMULÁRIO PARA HABILITAR/DESABILITAR BOTÃO
+        function validarFormulario() {
+            const quantidade = parseInt(quantidadeInput.value);
+            const isValid = quantidade > 0 && selectedTipo && selectedMetragem;
             
-            // Verifica se a cor já está selecionada
-            const index = selectedCores.indexOf(cor);
+            addButton.disabled = !isValid;
             
-            if (index === -1) {
-                // Adiciona a cor
-                selectedCores.push(cor);
-                button.classList.add('selected');
+            if (isValid) {
+                addButton.style.backgroundColor = '';
             } else {
-                // Remove a cor
-                selectedCores.splice(index, 1);
-                button.classList.remove('selected');
-            }
-            
-            updateSelectedColorsDisplay();
-        }
-
-        function updateSelectedColorsDisplay() {
-            if (selectedCores.length > 0) {
-                selectedColorsDisplay.textContent = 'Cores selecionadas: ' + selectedCores.join(', ');
-            } else {
-                selectedColorsDisplay.textContent = '';
+                addButton.style.backgroundColor = '#6c757d';
             }
         }
 
@@ -758,30 +879,43 @@
             };
             localStorage.setItem('dadosContador', JSON.stringify(dados));
             
-            statusBar.style.display = 'block';
-            setTimeout(() => {
-                statusBar.style.display = 'none';
-            }, 2000);
+            // Mostrar status bar apenas se houver dados
+            if (boxNumberInput.value || ownerNameInput.value || conferenteNameInput.value || lancamentos.length > 0) {
+                statusBar.style.display = 'block';
+                setTimeout(() => {
+                    statusBar.style.display = 'none';
+                }, 2000);
+            }
         }
 
         // FUNÇÃO PARA CARREGAR OS DADOS QUANDO A PÁGINA ABRE
         function carregarDados() {
             const dadosSalvos = localStorage.getItem('dadosContador');
             if (dadosSalvos) {
-                const dados = JSON.parse(dadosSalvos);
-                boxNumberInput.value = dados.boxNumber || '';
-                ownerNameInput.value = dados.ownerName || '';
-                conferenteNameInput.value = dados.conferenteName || '';
-                lancamentos = dados.lancamentos || [];
-                renderList();
-                updateTotals();
+                try {
+                    const dados = JSON.parse(dadosSalvos);
+                    boxNumberInput.value = dados.boxNumber || '';
+                    ownerNameInput.value = dados.ownerName || '';
+                    conferenteNameInput.value = dados.conferenteName || '';
+                    lancamentos = dados.lancamentos || [];
+                    renderList();
+                    updateTotals();
+                } catch (e) {
+                    console.error('Erro ao carregar dados salvos:', e);
+                    // Se houver erro, limpa os dados corrompidos
+                    localStorage.removeItem('dadosContador');
+                }
             }
         }
 
+        // ADICIONAR ENTRADA NA LISTA
         function adicionarEntrada() {
             const quantidade = parseInt(quantidadeInput.value);
+            
+            // Validações
             if (!quantidade || quantidade <= 0) { 
                 alert('Insira uma quantidade válida.'); 
+                quantidadeInput.focus();
                 return; 
             }
             if (!selectedTipo) { 
@@ -792,17 +926,13 @@
                 alert('Selecione a metragem.'); 
                 return; 
             }
-            if (selectedCores.length === 0) { 
-                alert('Selecione pelo menos uma cor.'); 
-                return; 
-            }
 
+            // Adicionar à lista
             lancamentos.push({ 
                 id: Date.now(), 
                 quantidade, 
                 tipo: selectedTipo, 
-                metros: selectedMetragem,
-                cores: [...selectedCores] // Cria uma cópia do array
+                metragem: selectedMetragem
             });
 
             renderList();
@@ -811,32 +941,47 @@
             
             // Limpar campos após adicionar
             quantidadeInput.value = '';
+            validarFormulario();
             quantidadeInput.focus();
         }
 
+        // RENDERIZAR LISTA DE LANÇAMENTOS
         function renderList() {
             macoList.innerHTML = '';
+            
+            if (lancamentos.length === 0) {
+                const li = document.createElement('li');
+                li.innerHTML = '<div style="text-align: center; color: #6c757d; font-style: italic;">Nenhum lançamento adicionado</div>';
+                macoList.appendChild(li);
+                return;
+            }
+            
             lancamentos.forEach(item => {
                 const li = document.createElement('li');
                 li.innerHTML = `
                     <div>
-                        <strong>${item.quantidade}x</strong> - ${item.tipo} - ${item.metros} - ${item.cores.join(', ')}
+                        <strong>${item.quantidade}x</strong> - ${item.tipo} - ${item.metragem}
                     </div>
-                    <button class="delete-btn" onclick="removerEntrada(${item.id})">×</button>
+                    <button class="delete-btn" onclick="removerEntrada(${item.id})" title="Remover">×</button>
                 `;
                 macoList.appendChild(li);
             });
         }
 
+        // REMOVER ENTRADA DA LISTA
         function removerEntrada(id) {
-            lancamentos = lancamentos.filter(item => item.id !== id);
-            renderList();
-            updateTotals();
-            salvarDados();
+            if (confirm('Tem certeza que deseja remover este lançamento?')) {
+                lancamentos = lancamentos.filter(item => item.id !== id);
+                renderList();
+                updateTotals();
+                salvarDados();
+            }
         }
 
+        // ATUALIZAR TOTAIS DINAMICAMENTE
         function updateTotals() {
             const totals = {
+                '95m': 0,
                 '90m': 0,
                 '50m': 0,
                 '30m': 0,
@@ -844,18 +989,29 @@
                 '9+9m': 0
             };
 
+            // Calcular totais por metragem
             lancamentos.forEach(item => {
-                if (totals.hasOwnProperty(item.metros)) {
-                    totals[item.metros] += item.quantidade;
+                if (totals.hasOwnProperty(item.metragem)) {
+                    totals[item.metragem] += item.quantidade;
                 }
             });
 
-            document.getElementById('total-90m').textContent = totals['90m'];
-            document.getElementById('total-50m').textContent = totals['50m'];
-            document.getElementById('total-30m').textContent = totals['30m'];
-            document.getElementById('total-1515m').textContent = totals['15+15m'];
-            document.getElementById('total-99m').textContent = totals['9+9m'];
+            // Atualizar display dinâmico - mostrar apenas metragens com valores > 0
+            dynamicTotals.innerHTML = '';
+            
+            const metragensComValor = Object.entries(totals).filter(([metragem, total]) => total > 0);
+            
+            if (metragensComValor.length === 0) {
+                dynamicTotals.innerHTML = '<p style="text-align: center; color: #6c757d; font-style: italic;">Nenhum lançamento adicionado</p>';
+            } else {
+                metragensComValor.forEach(([metragem, total]) => {
+                    const p = document.createElement('p');
+                    p.innerHTML = `Total de Maços (${metragem}): <span>${total}</span>`;
+                    dynamicTotals.appendChild(p);
+                });
+            }
 
+            // Calcular total geral
             const totalGeral = Object.values(totals).reduce((sum, value) => sum + value, 0);
             document.getElementById('total-geral').textContent = totalGeral;
 
@@ -866,12 +1022,12 @@
                 // Extrai apenas o número da metragem (remove o 'm' e trata casos como '15+15m')
                 let metragemNumerica;
                 
-                if (item.metros === '15+15m') {
+                if (item.metragem === '15+15m') {
                     metragemNumerica = 30; // 15+15m = 30 metros
-                } else if (item.metros === '9+9m') {
+                } else if (item.metragem === '9+9m') {
                     metragemNumerica = 18; // 9+9m = 18 metros
                 } else {
-                    metragemNumerica = parseInt(item.metros);
+                    metragemNumerica = parseInt(item.metragem);
                 }
                 
                 totalConvertido += (item.quantidade * metragemNumerica) / 30;
@@ -882,7 +1038,14 @@
             document.getElementById('total-convertido').textContent = totalArredondado;
         }
 
+        // IMPRIMIR RELATÓRIO
         function imprimirRelatorio() {
+            // Validar se há dados para imprimir
+            if (lancamentos.length === 0) {
+                alert('Não há lançamentos para imprimir.');
+                return;
+            }
+
             // Atualizar informações para impressão
             document.getElementById('print-box-number').textContent = boxNumberInput.value || '-';
             document.getElementById('print-owner-name').textContent = ownerNameInput.value || '-';
@@ -897,37 +1060,17 @@
             const cortePrincipal = tipos.length > 0 ? tipos[0] : '-';
             document.getElementById('print-corte-principal').textContent = cortePrincipal;
 
-            // Ocultar totais zerados na impressão
-            const totals = {
-                '90m': parseInt(document.getElementById('total-90m').textContent),
-                '50m': parseInt(document.getElementById('total-50m').textContent),
-                '30m': parseInt(document.getElementById('total-30m').textContent),
-                '15+15m': parseInt(document.getElementById('total-1515m').textContent),
-                '9+9m': parseInt(document.getElementById('total-99m').textContent)
-            };
-
-            // Esconder elementos com valor 0
-            Object.keys(totals).forEach(metragem => {
-                const element = document.querySelector(`#total-${metragem.replace('+', '')}`).parentElement;
-                if (totals[metragem] === 0) {
-                    element.style.display = 'none';
-                } else {
-                    element.style.display = 'flex';
-                }
-            });
-
             window.print();
-
-            // Restaurar display após impressão
-            setTimeout(() => {
-                Object.keys(totals).forEach(metragem => {
-                    const element = document.querySelector(`#total-${metragem.replace('+', '')}`).parentElement;
-                    element.style.display = 'flex';
-                });
-            }, 100);
         }
 
+        // ENVIAR EMAIL COM PDF
         function enviarEmailComPDF() {
+            // Validar se há dados para enviar
+            if (lancamentos.length === 0) {
+                alert('Não há lançamentos para enviar por email.');
+                return;
+            }
+
             // Criar PDF
             const doc = new jsPDF();
             
@@ -955,15 +1098,14 @@
             doc.text(`Conferente: ${conferenteNameInput.value || '-'}`, 20, 95);
             
             // Tabela de lançamentos
-            const tableColumn = ["Qtd", "Tipo", "Metragem", "Cores"];
+            const tableColumn = ["Qtd", "Tipo", "Metragem"];
             const tableRows = [];
             
             lancamentos.forEach(item => {
                 const row = [
                     item.quantidade.toString(),
                     item.tipo,
-                    item.metros,
-                    item.cores.join(', ')
+                    item.metragem
                 ];
                 tableRows.push(row);
             });
@@ -977,6 +1119,9 @@
                 headStyles: {
                     fillColor: [200, 16, 46], // Vermelho JBS
                     textColor: 255
+                },
+                styles: {
+                    fontSize: 10
                 }
             });
             
@@ -985,23 +1130,23 @@
             
             // Calcular totais
             const totals = {
-                '90m': 0, '50m': 0, '30m': 0, '15+15m': 0, '9+9m': 0
+                '95m': 0, '90m': 0, '50m': 0, '30m': 0, '15+15m': 0, '9+9m': 0
             };
             
             let totalConvertido = 0;
             
             lancamentos.forEach(item => {
-                if (totals.hasOwnProperty(item.metros)) {
-                    totals[item.metros] += item.quantidade;
+                if (totals.hasOwnProperty(item.metragem)) {
+                    totals[item.metragem] += item.quantidade;
                 }
                 
                 let metragemNumerica;
-                if (item.metros === '15+15m') {
+                if (item.metragem === '15+15m') {
                     metragemNumerica = 30;
-                } else if (item.metros === '9+9m') {
+                } else if (item.metragem === '9+9m') {
                     metragemNumerica = 18;
                 } else {
-                    metragemNumerica = parseInt(item.metros);
+                    metragemNumerica = parseInt(item.metragem);
                 }
                 
                 totalConvertido += (item.quantidade * metragemNumerica) / 30;
@@ -1046,27 +1191,49 @@
             reader.readAsDataURL(pdfBlob);
         }
 
+        // RESETAR COMPLETAMENTE
         function resetarContagem() {
-            if (confirm('Tem certeza que deseja resetar toda a contagem?')) {
+            if (confirm('Tem certeza que deseja resetar TODOS os dados? Isso irá limpar todas as informações da caixa e lançamentos.')) {
+                // Limpar arrays e variáveis
                 lancamentos = [];
                 selectedTipo = null;
                 selectedMetragem = null;
-                selectedCores = [];
+                
+                // Limpar campos de entrada
+                boxNumberInput.value = '';
+                ownerNameInput.value = '';
+                conferenteNameInput.value = '';
+                quantidadeInput.value = '';
                 
                 // Limpar seleções visuais
-                document.querySelectorAll('#tipo-group button, #metragem-group button, #color-group button').forEach(btn => {
+                document.querySelectorAll('#tipo-group button, .dropdown-option').forEach(btn => {
                     btn.classList.remove('selected');
                 });
                 
-                updateSelectedColorsDisplay();
+                // Resetar dropdown
+                dropdownToggle.textContent = 'Selecione a Metragem';
+                
+                // Atualizar interface
+                validarFormulario();
                 renderList();
                 updateTotals();
-                salvarDados();
+                
+                // Limpar localStorage
+                localStorage.removeItem('dadosContador');
+                
+                // Mostrar mensagem de confirmação
+                alert('Todos os dados foram resetados com sucesso!');
             }
         }
 
+        // EVENT LISTENERS PARA VALIDAÇÃO EM TEMPO REAL
+        quantidadeInput.addEventListener('input', validarFormulario);
+
         // Carregar dados ao iniciar a página
-        window.onload = carregarDados;
+        window.onload = function() {
+            carregarDados();
+            validarFormulario();
+        };
     </script>
 </body>
 </html>
