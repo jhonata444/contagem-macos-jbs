@@ -312,7 +312,8 @@
         }
         
         .dropdown-menu.open {
-            max-height: 400px;
+            max-height: 300px; /* Altura máxima aumentada */
+            overflow-y: auto; /* Adiciona scroll quando necessário */
         }
         
         .dropdown-option {
@@ -652,6 +653,11 @@
             .subtitle-jbs {
                 font-size: 0.8em;
             }
+            
+            /* Ajustes para mobile no dropdown */
+            .dropdown-menu.open {
+                max-height: 250px; /* Um pouco menor no mobile */
+            }
         }
 
         /* Estilos específicos para quando estiver em modo standalone (tela inicial) */
@@ -725,8 +731,10 @@
                 <div class="dropdown-menu" id="dropdown-menu">
                     <div class="dropdown-option" onclick="selectMetragem('95m')">95m</div>
                     <div class="dropdown-option" onclick="selectMetragem('90m')">90m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('60m')">60m</div>
                     <div class="dropdown-option" onclick="selectMetragem('50m')">50m</div>
                     <div class="dropdown-option" onclick="selectMetragem('30m')">30m</div>
+                    <div class="dropdown-option" onclick="selectMetragem('20m')">20m</div>
                     <div class="dropdown-option" onclick="selectMetragem('15+15m')">15+15m</div>
                     <div class="dropdown-option" onclick="selectMetragem('9+9m')">9+9m</div>
                 </div>
@@ -983,8 +991,10 @@
             const totals = {
                 '95m': 0,
                 '90m': 0,
+                '60m': 0,
                 '50m': 0,
                 '30m': 0,
+                '20m': 0,
                 '15+15m': 0,
                 '9+9m': 0
             };
@@ -1130,7 +1140,7 @@
             
             // Calcular totais
             const totals = {
-                '95m': 0, '90m': 0, '50m': 0, '30m': 0, '15+15m': 0, '9+9m': 0
+                '95m': 0, '90m': 0, '60m': 0, '50m': 0, '30m': 0, '20m': 0, '15+15m': 0, '9+9m': 0
             };
             
             let totalConvertido = 0;
